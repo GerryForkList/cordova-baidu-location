@@ -12,6 +12,44 @@
 ### 二，安装插件
 cordova plugin add https://github.com/hewz/cordova-baidu-location --variable API_KEY="your key"
 
+<font color=Red>这里的key的 应用类型：Android SDK</font>
+
+ionic3使用实例：
+<pre>
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+declare let BMap, baidu_location;
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html'
+})
+export class HomePage {
+  map: any;
+  constructor(public navCtrl: NavController, private geolocation: Geolocation) {
+  }
+  ionViewDidLoad() {
+    this.map = new BMap.Map("Bmap");
+    var point = new BMap.Point(116.404, 39.915);
+    this.map.centerAndZoom(point, 15);
+  }
+  getBaiDuMap() {
+    let self = this;
+    baidu_location.getCurrentPosition(function (data) {
+      if (data.latitude && data.longitude) {
+        var point = new BMap.Point(data.longitude, data.latitude);
+        var mk = new BMap.Marker(point);
+        self.map.addOverlay(mk);
+        self.map.panTo(point);
+      }
+    }, function (err) {
+      console.log(err);
+    });
+  }
+
+}
+
+</pre>
+
 ### 三，调用方法
 ```
 // 进行定位
